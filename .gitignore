@@ -1,0 +1,4 @@
+.venv
+output_code
+.pyc
+__pycache__

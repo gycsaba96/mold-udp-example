@@ -1,0 +1,4 @@
+[submodule "P4RROT"]
+	path = P4RROT
+	url = https://github.com/Team-P4RROT/P4RROT.git
+	branch = main

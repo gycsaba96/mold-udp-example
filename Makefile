@@ -1,6 +1,7 @@
 SHELL := /bin/bash
 P4RROT_CODE := codegen.py
 P4RROT_TEMPLATE := P4RROT/templates/p4_template.p4app
+SERVER := englewood.ct.univie.ac.at
 
 submodule-setup:
 	git submodule init
@@ -31,7 +32,7 @@ build: code-gen
 	cd output_code && bash build.sh
 
 deploy:
-	cd output_code && /opt/netronome/p4/bin/rtecli -r englewood.ct.univie.ac.at design-load -f simple_router.nffw -p out/pif_design.json
+	cd output_code && /opt/netronome/p4/bin/rtecli -r $(SERVER) design-load -f simple_router.nffw -p out/pif_design.json
 
 stats:
 	bash stats.sh $(P4RROT_TEMPLATE) $(P4RROT_CODE)

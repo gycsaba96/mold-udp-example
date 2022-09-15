@@ -30,6 +30,9 @@ build: code-gen
 	cp config.sh output_code/config.sh
 	cd output_code && bash build.sh
 
+deploy:
+	cd output_code && /opt/netronome/p4/bin/rtecli -r englewood.ct.univie.ac.at design-load -f simple_router.nffw -p out/pif_design.json
+
 stats:
 	bash stats.sh $(P4RROT_TEMPLATE) $(P4RROT_CODE)
 

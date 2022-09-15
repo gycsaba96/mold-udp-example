@@ -26,6 +26,10 @@ code-gen:
 	cp -r $(P4RROT_TEMPLATE) output_code
 	source .venv/bin/activate && python3 $(P4RROT_CODE)
 
+build: code-gen
+	cp config.sh output_code/config.sh
+	cd output_code && bash build.sh
+
 stats:
 	bash stats.sh $(P4RROT_TEMPLATE) $(P4RROT_CODE)
 

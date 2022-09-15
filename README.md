@@ -1,6 +1,6 @@
-# P4RROT Skeleton Project
+# MoldUDP example for P4RROT
 
-An easy way to start using [P4RROT](https://github.com/Team-P4RROT/P4RROT).
+A motivating examle on how to use [P4RROT](https://github.com/Team-P4RROT/P4RROT) for High-Frequency Trading.
 
 ## Dependencies
 

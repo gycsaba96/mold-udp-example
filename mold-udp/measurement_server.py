@@ -1,12 +1,17 @@
 import socket
 import struct
 import threading
+import time
+import subprocess
+import sys
 
 MCAST_IP = '192.168.11.2'
 MCAST_PORT = 5555
 
 RETR_IP = '192.168.11.2'
 RETR_PORT = 7777
+
+SCENARIO = sys.argv[1]
 
 def create_message_block(msg):
     return struct.pack('!H{}s'.format(len(msg)),len(msg),msg)
@@ -82,21 +87,26 @@ class SimpleMoldUDPSrever:
         self.mcast.close()
 
 
-
 server = SimpleMoldUDPSrever()
 server.start_retransmitter()
 
-drop = False
-while True:
-    messages = input('> ')
-    if messages=='exit':
-        break
-    if messages=='DROP':
-        drop = True
-        continue
+def start_tcpdump():
+    subprocess.call('sudo true'.split())
+    return subprocess.Popen('sudo tcpdump -w measurement_{}.pcap -i enp101s0np1 udp and port 5555 or 7777'.format(SCENARIO).split())
 
-    messages = list(map(lambda m: m.encode('utf-8'), messages.split()))
-    server.send(messages,drop)
-    drop=False
+def send_packets():
+    for i in range(100):
+        server.send([('missing_'+str(i)).encode('utf-8')],drop=True)
+        server.send([('data_'+str(i)).encode('utf-8')],drop=False)
+        time.sleep(1)
+
+while server.clients == []:
+    time.sleep(1)
+time.sleep(1)
+
+tcpdump = start_tcpdump()
+time.sleep(5)
+send_packets()
+time.sleep(5)
 
 server.stop()

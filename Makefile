@@ -33,6 +33,7 @@ build: code-gen
 
 deploy:
 	cd output_code && /opt/netronome/p4/bin/rtecli -r $(SERVER) design-load -f simple_router.nffw -p out/pif_design.json
+	python /opt/nfp_pif/thrift/client/sdk6_rte_cli.py -r $(SERVER) registers set -r r_next_id --values 1
 
 stats:
 	bash stats.sh $(P4RROT_TEMPLATE) $(P4RROT_CODE)

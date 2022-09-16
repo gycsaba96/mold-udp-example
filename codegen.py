@@ -36,8 +36,8 @@ fp\
                 .add(CastVar('msg_count','missing'))\
                 .add(StrictAssignVar('seq_id','tmp_next_id'))\
                 .add(TruncateRemainng())\
-                .add(SetStandardField(UdpSrcPort,7777))\
                 .add(ClonePacket(0x0300))\
+                .add(SetStandardField(UdpSrcPort,7777))\
                 .add(SendBack())\
              .Else()\
                 .add(Comment('*** update expected next id if required***'))\

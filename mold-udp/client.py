@@ -1,6 +1,11 @@
 import socket
 import struct
 import threading
+import sys
+
+REQUEST_RETRANSMISSION = True
+if len(sys.argv)>0 and sys.argv[1]=='norequest':
+    REQUEST_RETRANSMISSION = False
 
 MCAST_IP = 'localhost'
 MCAST_PORT = 5555
@@ -34,7 +39,7 @@ while True:
     _, seq_id, count = struct.unpack('!10sQH',data[:20])
     
     # ask retransmission if neccessaire
-    if seq_id>next_id:
+    if REQUEST_RETRANSMISSION and seq_id>next_id:
         s.sendto(struct.pack('!10sQH',b'testdata  ',next_id,seq_id-next_id),RETR_ADDR)
 
     # print received messages

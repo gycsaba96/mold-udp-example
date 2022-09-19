@@ -95,14 +95,16 @@ def start_tcpdump():
     return subprocess.Popen('sudo tcpdump -w measurement_{}.pcap -i enp101s0np1 udp and port 5555 or 7777'.format(SCENARIO).split())
 
 def send_packets():
-    for i in range(100):
+    for i in range(1000):
         server.send([('missing_'+str(i)).encode('utf-8')],drop=True)
         server.send([('data_'+str(i)).encode('utf-8')],drop=False)
-        time.sleep(1)
+        time.sleep(0.1)
 
 while server.clients == []:
     time.sleep(1)
 time.sleep(1)
+
+input('Press ENTER to start sending the packets...')
 
 tcpdump = start_tcpdump()
 time.sleep(5)

@@ -42,3 +42,54 @@ A motivating examle on how to use [P4RROT](https://github.com/Team-P4RROT/P4RROT
     ```console
     make deploy SERVER=<server_name>
     ```
+
+The `mold-udp/server.py` and  `mold-udp/client.py` scripts can be used to test the functionality of the solution.
+
+## Measure the performance
+
+### Offloaded solution
+
+1. Start the RTE provided by Netronome.
+
+2. Deploy the generated code. 
+
+    ```console
+    make deploy SERVER=<server_name>
+    ```
+
+3. Configure the ethernet ports (IP address, netmask, etc.).
+
+4. Start the `mold-udp/measurement_server.py` script on the same machine as your smartNIC is.
+
+    ```console
+    python3 measurement_server.py <scenario-name>
+    ```
+
+5. Start the `mold-udp/client.py` script on a different server that can send traffic to the smartNIC. The `norequest` argument will disable the automatic retransmission requests.
+
+    ```console
+    python3 client.py norequest
+    ```
+
+6. Start background traffic (e.g. using iperf).
+
+7. Hit ENTER in the console of `mold-udp/measurement_server.py`. This will send only every second packet thus triggering a retransmission request each time.
+
+8. After the test, the captured MoldUDP traffic is saved in the `measurement_<scenario-name>.pcap` file.
+
+### Non-offloaded solution
+
+A baseline can be obtained, by running only the P4 template on the smartNIC. This can be done by  slightly modifying steps 2 and 5.
+
+2. Build and deploy only packet forwarding.
+
+    ```console
+    make build-baseline
+    make deploy-baseline
+    ```
+5. Run the client without disabling the retransmission requests.
+
+    ```console
+    python3 client.py
+    ```
+
